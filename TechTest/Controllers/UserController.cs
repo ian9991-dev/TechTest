@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.ComponentModel.DataAnnotations;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 using TechTest.Auth;
 using TechTest.Models;
 using TechTest.Services;
@@ -16,7 +13,6 @@ namespace TechTest.Controllers
         [HttpPost]
         [Route("/v1/users")]
         [ValidateModelState]
- //       [SwaggerOperation("CreateUser")]
         public virtual IActionResult CreateUser(CreateUserRequest user)
         {
             try
@@ -33,7 +29,6 @@ namespace TechTest.Controllers
         [Route("/v1/users/{userId}")]
         [ValidateModelState]
         [Authorize]
-        //        [SwaggerOperation("DeleteUserByID")]
         public virtual IActionResult DeleteUserByID([FromRoute][Required] string userId)
         {
             try
@@ -65,7 +60,6 @@ namespace TechTest.Controllers
         [Route("/v1/users/{userId}")]
         [ValidateModelState]
         [Authorize]
-        //      [SwaggerOperation("FetchUserByID")]
         public virtual IActionResult FetchUserByID([FromRoute][Required] string userId)
         {
             try
@@ -90,7 +84,6 @@ namespace TechTest.Controllers
         [Route("/v1/users/{userId}")]
         [ValidateModelState]
         [Authorize]
-        //      [SwaggerOperation("UpdateUserByID")]
         public virtual IActionResult UpdateUserByID([FromRoute][Required] string userId, CreateUserRequest user)
         {
             try

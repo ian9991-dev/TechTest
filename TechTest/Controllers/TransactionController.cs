@@ -12,8 +12,7 @@ namespace TechTest.Controllers
         [HttpPost]
         [Route("/v1/accounts/{accountNumber}/transactions")]
         [ValidateModelState]
-        [Authorize]
- //       [SwaggerOperation("CreateTransaction")]
+        [Authorize]       
         public virtual IActionResult CreateTransaction([FromRoute][Required] string accountNumber, [FromBody] CreateTransactionRequest createTransactionRequest)
         {
            
@@ -45,23 +44,10 @@ namespace TechTest.Controllers
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <remarks>Fetch transaction by ID.</remarks>
-        /// <param name="accountNumber">Account number of the bank account</param>
-        /// <param name="transactionId">ID of the transaction</param>
-        /// <response code="200">The transaction details</response>
-        /// <response code="400">The request didn&#39;t supply all the necessary data</response>
-        /// <response code="401">Access token is missing or invalid</response>
-        /// <response code="403">The user is not allowed to access the transaction</response>
-        /// <response code="404">Bank account was not found</response>
-        /// <response code="500">An unexpected error occurred</response>
         [HttpGet]
         [Route("/v1/accounts/{accountNumber}/transactions/{transactionId}")]
         [ValidateModelState]
         [Authorize]
-        //       [SwaggerOperation("FetchAccountTransactionByID")]
         public virtual IActionResult FetchAccountTransactionByID([FromRoute][Required] string accountNumber, [FromRoute][Required] string transactionId)
         {
 
@@ -94,21 +80,9 @@ namespace TechTest.Controllers
             } 
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <remarks>List transactions</remarks>
-        /// <param name="accountNumber">Account number of the bank account</param>
-        /// <response code="200">The list of transaction details</response>
-        /// <response code="400">The request didn&#39;t supply all the necessary data</response>
-        /// <response code="401">Access token is missing or invalid</response>
-        /// <response code="403">The user is not allowed to access the transactions</response>
-        /// <response code="404">Bank account was not found</response>
-        /// <response code="500">An unexpected error occurred</response>
         [HttpGet]
         [Route("/v1/accounts/{accountNumber}/transactions")]
         [ValidateModelState]
-   //     [SwaggerOperation("ListAccountTransaction")]
         public virtual IActionResult ListAccountTransaction([FromRoute][Required] string accountNumber)
         {
             try
@@ -131,7 +105,6 @@ namespace TechTest.Controllers
             }
             catch (Exception)
             {
-                // Log the exception (ex) here as needed
                 return StatusCode(500, new ErrorResponse() { Message = "An unexpected error occurred." });
             }
         }
