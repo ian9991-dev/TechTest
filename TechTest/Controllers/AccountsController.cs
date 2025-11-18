@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using TechTest.Auth;
-using TechTest.Data.Models;
 using TechTest.Models;
 using TechTest.Services;
 
@@ -14,7 +13,6 @@ namespace TechTest.Controllers
         [Route("/v1/accounts")]
         [ValidateModelState] 
         [Authorize]
- //       [SwaggerOperation("CreateAccount")]
         public virtual IActionResult CreateAccount([FromBody] CreateBankAccountRequest createAccount)
         {
             try
@@ -34,7 +32,6 @@ namespace TechTest.Controllers
         [Route("/v1/accounts/{accountNumber}")]
         [ValidateModelState]
         [Authorize]
-        //       [SwaggerOperation("DeleteAccountByAccountNumber")]
         public virtual IActionResult DeleteAccountByAccountNumber([FromRoute][Required] string accountNumber)
         {
 
@@ -61,7 +58,6 @@ namespace TechTest.Controllers
         [Route("/v1/accounts/{accountNumber}")]
         [ValidateModelState]
         [Authorize]
-        //       [SwaggerOperation("FetchAccountByAccountNumber")]
         public virtual IActionResult FetchAccountByAccountNumber([FromRoute][Required] string accountNumber)
         {
 
@@ -90,7 +86,6 @@ namespace TechTest.Controllers
         [Route("/v1/accounts")]
         [ValidateModelState]
         [Authorize]
-        //      [SwaggerOperation("ListAccounts")]
         public virtual IActionResult ListAccounts()
         {
             try

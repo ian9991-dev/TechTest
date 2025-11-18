@@ -16,6 +16,18 @@ namespace TechTest.Controllers
         public string Audience { get; set; } = string.Empty;
         public int ExpiryMinutes { get; set; } = 60;
     }
+    public class LoginRequest
+    {
+        public string Username { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
+    }
+
+    public class TokenResponse
+    {
+        public string AccessToken { get; set; } = string.Empty;
+        public string TokenType { get; set; } = "Bearer";
+        public int ExpiresIn { get; set; }
+    }
 
     [Route("api/[controller]")]
     [ApiController]
@@ -28,19 +40,6 @@ namespace TechTest.Controllers
         {
             _jwt = jwtOptions.Value;
             _userValidateService = userValidateService;
-        }
-
-        public class LoginRequest
-        {
-            public string Username { get; set; } = string.Empty;
-            public string Password { get; set; } = string.Empty;
-        }
-
-        public class TokenResponse
-        {
-            public string AccessToken { get; set; } = string.Empty;
-            public string TokenType { get; set; } = "Bearer";
-            public int ExpiresIn { get; set; }
         }
 
         [AllowAnonymous]

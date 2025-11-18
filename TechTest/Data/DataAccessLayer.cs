@@ -1,7 +1,12 @@
-﻿using TechTest.Data.Models;
+﻿using Microsoft.AspNetCore.Components.Web;
+using TechTest.Data.Models;
 
 namespace TechTest.Data
 {
+    /// <summary>
+    /// Very simple in-memory data access layer for demonstration purposes.
+    /// Would be replaced with a real database access layer in a production application.
+    /// </summary>
     public class DataAccessLayer : IDataAccessLayer
     {
         private readonly IDictionary<string, AccountDetails> _accounts = new Dictionary<string, AccountDetails>();
@@ -13,20 +18,17 @@ namespace TechTest.Data
             return accountDetails;
         }
 
+        public bool CheckUserEmailExists(string email)
+            => _users.Values.Any(u => u.Email.Equals(email, StringComparison.OrdinalIgnoreCase));
+
         public AccountDetails[] GetAllAccountDetails(string userId)
-        {
-            return [.. _accounts.Values.Where(acc=>acc.UserId == userId)];
-        }
+            =>  [.. _accounts.Values.Where(acc=>acc.UserId == userId)];
 
         public AccountDetails? GetAccount(string accountNumber)
-        {
-            return _accounts.TryGetValue(accountNumber, out var accountDetails) ? accountDetails : null;
-        }
+            =>  _accounts.TryGetValue(accountNumber, out var accountDetails) ? accountDetails : null;
 
         public void DeleteAccount(string accountnumber)
-        {
-            _accounts.Remove(accountnumber);
-        }
+            => _accounts.Remove(accountnumber);
 
         public UserDetails CreateUser(UserDetails userDetails)
         {
@@ -35,20 +37,14 @@ namespace TechTest.Data
         }
 
         public UserDetails? GetUser(string id)
-        {
-            return _users.TryGetValue(id, out var userDetails) ? userDetails : null;
-        }
+            => _users.TryGetValue(id, out var userDetails) ? userDetails : null;
 
         public bool DeleteUser(string userId)
-        {
-            return _users.Remove(userId);
-        }
+            => _users.Remove(userId);
 
 
         public void RecordTransaction(TransactionRecord record, string accountNumber)
-        {
-            _accounts[accountNumber].Transactions.Add(record);
-        }
+            => _accounts[accountNumber].Transactions.Add(record);
 
         public TransactionRecord GetTransaction(string transactionId, string accountNumber)
             => GetAccount(accountNumber)!.Transactions.FirstOrDefault(t => t.Id == transactionId)!;

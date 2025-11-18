@@ -9,6 +9,7 @@ using System.Text.Json.Serialization;
 using TechTest.Auth;
 using TechTest.Controllers;
 using TechTest.Models;
+using TechTest.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -87,6 +88,7 @@ builder.Services.AddScoped<TechTest.Services.IAccountService, TechTest.Services.
 builder.Services.AddScoped<TechTest.Services.IUserService, TechTest.Services.UserService>();
 builder.Services.AddScoped<IUserValidateService, UserValidateService>();
 builder.Services.AddSingleton<TechTest.Data.IDataAccessLayer, TechTest.Data.DataAccessLayer>();
+builder.Services.AddSingleton<TechTest.Services.ICodesGenerator, TechTest.Services.CodesGenerator>();
 
 var app = builder.Build();
 

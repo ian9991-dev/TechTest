@@ -1,21 +1,20 @@
 ﻿using Mapster;
-using System.Security.Cryptography;
 using TechTest.Data;
 using TechTest.Data.Models;
 using TechTest.Models;
 
 namespace TechTest.Services
 {
-    public class AccountService(IDataAccessLayer dataAccessLayer) : IAccountService
+    public class AccountService(IDataAccessLayer dataAccessLayer, 
+                                ICodesGenerator codesGenerator) : IAccountService
     {
-        private readonly static Random _random = new();
         public BankAccountResponse CreateAccount(string name, AccountType accountType, string userId)
         {
             var dateTime = DateTime.UtcNow;
             var accountDetails = new AccountDetails
             {
-                AccountNumber = GenerateAccountNumber(),
-                SortCode = GenerateSortCode(),
+                AccountNumber = CreateAccountNumber(),
+                SortCode = codesGenerator.GenerateSortCode(),
                 Name = name,
                 AccountType = accountType,
                 Balance = 0,
@@ -27,6 +26,19 @@ namespace TechTest.Services
 
             var details = dataAccessLayer.SaveAccountDetails(accountDetails);
             return details.Adapt<BankAccountResponse>();
+        }
+
+        private string CreateAccountNumber()
+        {
+            do
+            {
+                string accountNumber = codesGenerator.GenerateAccountNumber();
+                if (dataAccessLayer.GetAccount(accountNumber) == null)
+                {
+                    return accountNumber;
+                }
+            } 
+            while (true);
         }
 
         public AccountDetails[] GetAccounts(string userId)
@@ -41,7 +53,7 @@ namespace TechTest.Services
 
             var transaction = createTransactionRequest.Adapt<TransactionRecord>();
 
-            transaction.Id = GenerateTransactionId();
+            transaction.Id = codesGenerator.GenerateTransactionId();
             transaction.CreatedTimestamp = DateTime.UtcNow;
             if (transaction.Type == TransactionType.deposit)
             {
@@ -97,40 +109,5 @@ namespace TechTest.Services
                 })]
             };
         }
-
-        private static String GenerateSortCode()
-            => $"{Generate2DigigtPart()}-{Generate2DigigtPart()}-{Generate2DigigtPart()}";
-        private static string Generate2DigigtPart()
-        {
-            var random = _random.Next(0, 99);
-            return (random < 10) ? "0" + random.ToString() : random.ToString();
-        }
-
-        private static string GenerateAccountNumber() 
-            => new Random().Next(10000000, 99999999).ToString();
-
-
-        private static string GenerateTransactionId(int suffixLength = 6)
-        {
-            const string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-
-            var result = new char[suffixLength];
-            var bytes = new byte[suffixLength];
-
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(bytes);
-            }
-
-            for (int i = 0; i < suffixLength; i++)
-            {
-                var idx = bytes[i] % alphabet.Length;
-                result[i] = alphabet[idx];
-            }
-
-            return "tan-" + new string(result);
-        }
-
-        
     }
 }

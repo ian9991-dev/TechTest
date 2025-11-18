@@ -5,6 +5,7 @@ namespace TechTest.Data
     public interface IDataAccessLayer
     { 
         AccountDetails SaveAccountDetails(AccountDetails accountDetails);
+        bool CheckUserEmailExists(string email);
         AccountDetails[] GetAllAccountDetails(string userId);
         AccountDetails? GetAccount(string accountNumber);
         UserDetails CreateUser(UserDetails userDetails);
